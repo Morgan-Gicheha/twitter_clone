@@ -17,7 +17,7 @@ app =Flask(__name__)
 @app.before_first_request
 def create():
     db.create_all()
-
+# configuring database
 app.config["SQLALCHEMY_DATABASE_URI"]="postgresql://postgres:morgan8514@127.0.0.1:5432/twitter_clone"
 app.config["SECRET_KEY"]= "secret"
 app.config["DEBUG"]=True
@@ -34,6 +34,8 @@ def load_user(user_id):
     return Register.query.filter_by(id=user_id).first()    
 
 db=SQLAlchemy(app)
+# importing time
+from other_dependancies.time_func import time_
 
 # importig the models/tables
 from models.user import Register
@@ -67,8 +69,12 @@ def register():
             # getting_image url
             image_url = photos.url(image_filename)
             
+            # getting date  whent account was created
+            now_today= time_()
+            
             # sending data to dd
-            info = Register(name=name, username=username, password=generate_password_hash(password), profile_image=image_url)
+
+            info = Register(name=name, username=username, password=generate_password_hash(password),joined_on=now_today ,profile_image=image_url)
             info.create()
             
             return render_template("index.html", form=form, message="Account created! Now Login..")

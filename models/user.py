@@ -8,7 +8,7 @@ class Register(UserMixin ,db.Model):
     name = db.Column(db.String(80))
     username = db.Column(db.String(30))
     password = db.Column(db.String(100))
-    joined_on = db.Column(db.DateTime)
+    joined_on = db.Column(db.Date)
     profile_image= db.Column(db.String(100))
 
 

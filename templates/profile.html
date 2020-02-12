@@ -60,7 +60,7 @@
                     <div class="panel-body">
                         <div class="row pad">
                             <div class="col-lg-12">
-                                <img src="{{ url_for('static', filename='imgs/anonymous.png') }}" class="img-responsive img-circle center-block" alt="Image" style="height: 220px;" />
+                                <img src="{{ current_user.profile_image }}" class="img-responsive img-circle center-block" alt="Image" style="height: 200px;" />
                             </div>
                         </div>
                     </div>
@@ -75,7 +75,7 @@
                         </li>
                         <li class="list-group-item">
                             <i class="glyphicon glyphicon-calendar"></i> MEMBER SINCE:
-                            <strong class="pull-right">February 4, 2017</strong>
+                            <strong class="pull-right">{{ current_user.joined_on }}</strong>
                         </li>
                         <li class="list-group-item">
                             <i class="glyphicon glyphicon-th-list"></i> FOLLOWERS COUNT:
