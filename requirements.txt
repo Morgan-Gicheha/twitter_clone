@@ -1,3 +1,4 @@
+alembic==1.4.0
 aniso8601==8.0.0
 astroid==2.2.5
 attrs==19.1.0
@@ -13,9 +14,12 @@ Flask==1.1.1
 Flask-JWT-Extended==3.24.1
 Flask-Login==0.4.1
 Flask-Mail==0.9.1
+Flask-Migrate==2.5.2
 Flask-RESTful==0.3.7
 flask-restplus==0.13.0
+Flask-Script==2.0.6
 Flask-SQLAlchemy==2.4.0
+Flask-Uploads==0.2.1
 Flask-WTF==0.14.2
 idna==2.8
 imageio==2.6.1
@@ -27,6 +31,7 @@ Jinja2==2.10.1
 jsonschema==3.0.2
 jupyter-core==4.5.0
 lazy-object-proxy==1.4.2
+Mako==1.1.1
 MarkupSafe==1.1.1
 mccabe==0.6.1
 moviepy==0.2.2.11
@@ -45,6 +50,8 @@ PyJWT==1.7.1
 pylint==2.3.1
 pyrsistent==0.15.4
 PySocks==1.7.1
+python-dateutil==2.8.1
+python-editor==1.0.4
 pytz==2019.3
 requests==2.11.1
 requests-oauthlib==1.3.0
