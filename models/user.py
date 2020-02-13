@@ -2,7 +2,7 @@ from app import db
 from werkzeug.security import check_password_hash
 from flask_login import UserMixin
 
-class Register(UserMixin ,db.Model):
+class Users(UserMixin ,db.Model):
     """this is the registering a new user"""
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80))
@@ -10,6 +10,7 @@ class Register(UserMixin ,db.Model):
     password = db.Column(db.String(100))
     joined_on = db.Column(db.Date)
     profile_image= db.Column(db.String(100))
+    user=db.relationship("Posts", backref='this_user')
 
 
 

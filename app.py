@@ -31,18 +31,21 @@ login_manager.login_view = 'login'
 
 @login_manager.user_loader
 def load_user(user_id):
-    return Register.query.filter_by(id=user_id).first()    
+    return Users.query.filter_by(id=user_id).first()    
 
 db=SQLAlchemy(app)
 # importing time
 from other_dependancies.time_func import time_
+from other_dependancies.time_func import time_post
 
 # importig the models/tables
-from models.user import Register
+from models.user import Users
+from models.posts import Posts
 
 # importing wtf forms
 from form.registration import Register_form
 from form.login import Login_form
+from form.post_form import Post_form
 # routes
 @app.route("/",methods=["POST","GET"])
 def home():
@@ -74,7 +77,7 @@ def register():
             
             # sending data to dd
 
-            info = Register(name=name, username=username, password=generate_password_hash(password),joined_on=now_today ,profile_image=image_url)
+            info = Users(name=name, username=username, password=generate_password_hash(password),joined_on=now_today ,profile_image=image_url)
             info.create()
             
             return render_template("index.html", form=form, message="Account created! Now Login..")
@@ -91,16 +94,16 @@ def login():
             password = form.password.data
             remember_me = form.remember_me.data
 
-            check_if_user_exist= Register.query.filter_by(username=username).first()
+            check_if_user_exist= Users.query.filter_by(username=username).first()
             if not check_if_user_exist:
                 message= "no such username found!"
                 print(message)
                 return render_template("index.html" , form=form, message_user=message)
 
 
-            checkin_username_and_password=Register.pass_username_check(username=username, password=password)
+            checkin_username_and_password=Users.pass_username_check(username=username, password=password)
             if checkin_username_and_password:
-                login_user(check_if_user_exist)
+                login_user(check_if_user_exist,remember=form.remember_me.data)
                 print("loged in")
                 return redirect(url_for("profile"))
                
@@ -117,19 +120,33 @@ def login():
 
     return redirect(url_for("home"))
 
-@app.route("/timeline")
+@app.route("/timeline", methods=["POST","GET"])
 def timeline():
+    form= Post_form()
+    if form.validate_on_submit():
+        if request.method=="POST":
+            content= form.post_area.data
+            # sending info to db
+            time_post_var=time_post()
+            post=Posts(user_id=current_user.id, post=content, date_posted=time_post_var)
+            post.create()
+            print("post posted")
 
-
-
-    return render_template("timeline.html")
+    return render_template("timeline.html", form=form,)
 
 @app.route("/profile")
 @login_required
 def profile():
+    # fetching all posts made by the user
+   
+    current_user_id = current_user.id
+    all_posts = Posts.query.filter_by(user_id=current_user_id).all()
+
+
+
+
     # current user returns the object of the user that is logged in
-    
-    return render_template("profile.html",current_user=current_user)
+    return render_template("profile.html",current_user=current_user,all_posts=all_posts)
 
 # logout route
 @app.route("/logout")
