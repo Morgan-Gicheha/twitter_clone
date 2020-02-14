@@ -121,9 +121,13 @@ def login():
 
     return redirect(url_for("home"))
 
-@app.route("/timeline", methods=["POST","GET"])
-def timeline():
+# creating a post tweet route
+@app.route("/post", methods=["POST","GET"])
+def post_tweet():
     form= Post_form()
+
+
+    
     if form.validate_on_submit():
         if request.method=="POST":
             content= form.post_area.data
@@ -133,16 +137,35 @@ def timeline():
             post.create()
             print("post posted")
             return redirect(url_for('timeline'))
-    # fetching all posts
-    current_user_id= current_user.id
+
+
+
+@app.route("/timeline" ,defaults={'username':None})
+@app.route("/timeline/<username>", methods=["POST","GET"])
+def timeline(username):
+    form= Post_form()
+
+    # quering for username this query will only run if the the username is passed in: else it will jump to the default user in session
+    if username:
+        user= Users.query.filter_by(username= username).first()
+        current_user_id =  user.id
+    else:
+        current_user_id= current_user.id
+
+
+    
+        
     all_posts_timeline = Posts.query.filter_by(user_id=current_user_id).order_by(Posts.date_posted.desc()).all()
     # geting current time
     current_time =datetime.utcnow()
 
-
-    return render_template("timeline.html", form=form, all_posts = all_posts_timeline, current_time=current_time)
+    # getting total number of tweets
+    total_tweets= len(all_posts_timeline)
+        
+    return render_template("timeline.html", form=form, all_posts = all_posts_timeline, current_time=current_time, total_tweets=total_tweets)
 
 # time since post created
+# incomplete
 @app.template_filter("div_mode")
 def div_mode(seconds):
     seconds = seconds.total_seconds()
@@ -166,6 +189,7 @@ def div_mode(seconds):
 @login_required
 def profile():
     # fetching all posts made by the user
+
    
     current_user_id = current_user.id
   
