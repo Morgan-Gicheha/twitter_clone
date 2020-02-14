@@ -9,6 +9,7 @@ from  flask_wtf.file import FileField, FileAllowed
 from flask_uploads import UploadSet, configure_uploads, IMAGES
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager,UserMixin,logout_user,login_fresh,login_required,logout_user, login_user, current_user
+from datetime import datetime
 
 app =Flask(__name__)
 
@@ -72,7 +73,7 @@ def register():
             # getting_image url
             image_url = photos.url(image_filename)
             
-            # getting date  whent account was created
+            # getting date  whent account was created/caliing function
             now_today= time_()
             
             # sending data to dd
@@ -131,8 +132,35 @@ def timeline():
             post=Posts(user_id=current_user.id, post=content, date_posted=time_post_var)
             post.create()
             print("post posted")
+            return redirect(url_for('timeline'))
+    # fetching all posts
+    current_user_id= current_user.id
+    all_posts_timeline = Posts.query.filter_by(user_id=current_user_id).order_by(Posts.date_posted.desc()).all()
+    # geting current time
+    current_time =datetime.utcnow()
 
-    return render_template("timeline.html", form=form,)
+
+    return render_template("timeline.html", form=form, all_posts = all_posts_timeline, current_time=current_time)
+
+# time since post created
+@app.template_filter("div_mode")
+def div_mode(seconds):
+    seconds = seconds.total_seconds()
+    
+    day ,seconds= divmod(seconds,86400 )
+    hour, seconds = divmod(seconds,3600)
+    minute, seconds= divmod(seconds, 60)
+
+    if day >0:
+        print(f'{day}days')
+    elif hour > 0:
+        print(f'{hour}hour(s)')
+    elif minute > 0:
+        print(f'{minute}minutes')
+    else:
+        print(f'{seconds}seconds')
+
+
 
 @app.route("/profile")
 @login_required
@@ -140,13 +168,13 @@ def profile():
     # fetching all posts made by the user
    
     current_user_id = current_user.id
-    all_posts = Posts.query.filter_by(user_id=current_user_id).all()
+  
 
 
 
 
     # current user returns the object of the user that is logged in
-    return render_template("profile.html",current_user=current_user,all_posts=all_posts)
+    return render_template("profile.html",current_user=current_user)
 
 # logout route
 @app.route("/logout")
