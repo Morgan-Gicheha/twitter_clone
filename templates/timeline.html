@@ -110,7 +110,8 @@
                                                 <small><em>@{{any.this_user.username}}</em></small>
                                             </div>
                                             <div class="col-lg-2 text-right">
-                                                {{ (any.date_posted - current_time) }}
+                                                {{ (current_time-any.date_posted)|div_mode  }}
+                                                
                                             </div>
                                         </div>
                                         <div class="row pad">
