@@ -144,7 +144,7 @@ def post_tweet():
 @app.route("/timeline/<username>", methods=["POST","GET"])
 def timeline(username):
     form= Post_form()
-
+    
     # quering for username this query will only run if the the username is passed in: else it will jump to the default user in session
     if username:
         user= Users.query.filter_by(username= username).first()
@@ -153,6 +153,7 @@ def timeline(username):
         current_user_id =  user.id
     else:
         current_user_id= current_user.id
+        user = current_user
 
 
     
@@ -164,7 +165,7 @@ def timeline(username):
     # getting total number of tweets
     total_tweets= len(all_posts_timeline)
         
-    return render_template("timeline.html", form=form, all_posts = all_posts_timeline, current_time=current_time, total_tweets=total_tweets)
+    return render_template("timeline.html", form=form, all_posts = all_posts_timeline, current_time=current_time, total_tweets=total_tweets, user=user)
   
 # time since post created
 # incomplete
