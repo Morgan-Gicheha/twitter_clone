@@ -124,11 +124,9 @@ def login():
 
 # creating a post tweet route
 @app.route("/post", methods=["POST","GET"])
+@login_required
 def post_tweet():
     form= Post_form()
-
-
-    
     if form.validate_on_submit():
         if request.method=="POST":
             content= form.post_area.data
@@ -143,6 +141,7 @@ def post_tweet():
 
 @app.route("/timeline" ,defaults={'username':None})
 @app.route("/timeline/<username>", methods=["POST","GET"])
+@login_required
 def timeline(username):
     form= Post_form()
     
@@ -193,6 +192,7 @@ def div_mode(delta):
 
 @app.route("/profile", defaults={'username':None})
 @app.route("/profile/<username>", methods=["POST","GET"])
+@login_required
 def profile(username):
     if username:
         # if username.. query database for username and return object
@@ -210,6 +210,18 @@ def profile(username):
 
 
     return render_template("profile.html",current_user=current_user_, all_posts=all_posts, current_time=current_time)
+
+# follow route
+@app.route("/follow/<username>")
+@login_required
+def follow(username):
+    user_to_follow = Users.query.filter_by(username=username).first()
+
+    current_user.follower.append(user_to_follow)
+    db.session.commit()
+    return redirect(url_for("profile"))
+
+
 
 # logout route
 @app.route("/logout")
