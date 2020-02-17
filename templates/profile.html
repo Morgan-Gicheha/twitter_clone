@@ -115,7 +115,7 @@
                                                 <div class="col-lg-10">
                                                     <div>
                                                         <strong class="mid">{{post.this_user.name}} </strong>
-                                                        <small><em>@{{post.this_user.username}}</em></small> . {{post.date_posted}}
+                                                        <small><em>@{{post.this_user.username}}</em></small> . {{(current_time-post.date_posted)|div_mode}}
                                                     </div>
                                                     
                                                     <div class="pad">

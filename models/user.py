@@ -1,6 +1,7 @@
 from app import db
 from werkzeug.security import check_password_hash
 from flask_login import UserMixin
+from models.junction import followers
 
 class Users(UserMixin ,db.Model):
     """this is the registering a new user"""
@@ -11,6 +12,11 @@ class Users(UserMixin ,db.Model):
     joined_on = db.Column(db.Date)
     profile_image= db.Column(db.String(100))
     user=db.relationship("Posts", backref='this_user')
+    
+    follower = db.relationship("Users", secondary="follower_followee_jk",
+                                primaryjoin=(followers.c.me_user_id==id),
+                                secondaryjoin=(followers.c.follower_id==id),
+                                backref=db.backref("followers", lazy="dynamic"), lazy="dynamic")
 
 
 

@@ -42,6 +42,7 @@ from other_dependancies.time_func import time_post
 # importig the models/tables
 from models.user import Users
 from models.posts import Posts
+from models.junction import followers
 
 # importing wtf forms
 from form.registration import Register_form
@@ -180,13 +181,13 @@ def div_mode(delta):
     minute, seconds= divmod(seconds, 60)
 
     if day >0:
-        return f'{day}days'
+        return f'{day}d'
     elif hour > 0:
-        return f'{hour}hour(s)'
+        return f'{hour}h'
     elif minute > 0:
-        return f'{minute}minutes'
+        return f'{minute}m'
     else:
-        return f'{seconds}seconds'
+        return f'{seconds}s'
 
 
 
@@ -205,10 +206,10 @@ def profile(username):
         current_user_=current_user
     # quering for all posts
     all_posts = Posts.query.filter_by(user_id=current_user_.id).order_by(Posts.date_posted.desc()).all()
+    current_time =datetime.now()
 
 
-
-    return render_template("profile.html",current_user=current_user_, all_posts=all_posts)
+    return render_template("profile.html",current_user=current_user_, all_posts=all_posts, current_time=current_time)
 
 # logout route
 @app.route("/logout")
