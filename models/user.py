@@ -13,13 +13,18 @@ class Users(UserMixin ,db.Model):
     profile_image= db.Column(db.String(100))
     user=db.relationship("Posts", backref='this_user')
     
-    follower = db.relationship("Users", secondary="follower_followee_jk",
-                                primaryjoin=(followers.c.me_user_id==id),
-                                secondaryjoin=(followers.c.follower_id==id),
+    # this is a query and it returns allm people that the curent user is following::: soo basically the cureent user is on the left of the table while\
+    # his/her follwers are on the right handside of the table
+    following = db.relationship("Users", secondary="follower_followee_jk",
+                                primaryjoin=(followers.c.me_user_id_follower==id),
+                                secondaryjoin=(followers.c.followee_id_followee==id),
                                 backref=db.backref("followers", lazy="dynamic"), lazy="dynamic")
 
 
-
+    # # this query returns all peape that follw the current user
+    followed_by = db.relationship("Users", secondary=followers, 
+                                primaryjoin=(followers.c.followee_id_followee==id), 
+                                secondaryjoin=(followers.c.me_user_id_follower==id), backref=db.backref("poeple_following_me", lazy="dynamic"), lazy="dynamic" )
     # function to commit tothe db
     def create(self):
         db.session.add(self)

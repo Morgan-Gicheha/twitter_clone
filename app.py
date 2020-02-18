@@ -207,9 +207,14 @@ def profile(username):
     # quering for all posts
     all_posts = Posts.query.filter_by(user_id=current_user_.id).order_by(Posts.date_posted.desc()).all()
     current_time =datetime.now()
+    # getting list of follwers
+    followed_by = current_user_.followed_by.all()
+    # print(len(followers_by))
+    # for any in followed_by:
+    #     print(any.password)
 
 
-    return render_template("profile.html",current_user=current_user_, all_posts=all_posts, current_time=current_time)
+    return render_template("profile.html",current_user=current_user_, all_posts=all_posts, current_time=current_time, followed_by=followed_by)
 
 # follow route
 @app.route("/follow/<username>")
@@ -217,7 +222,7 @@ def profile(username):
 def follow(username):
     user_to_follow = Users.query.filter_by(username=username).first()
 
-    current_user.follower.append(user_to_follow)
+    current_user.following.append(user_to_follow)
     db.session.commit()
     return redirect(url_for("profile"))
 
