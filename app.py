@@ -87,7 +87,7 @@ def register():
     return render_template("register.html", form=form)
 
 
-@app.route("/login", methods=["POST"])
+@app.route("/login", methods=["POST","GET"])
 def login():
     form = Login_form()
     if form.validate_on_submit():
@@ -213,8 +213,20 @@ def profile(username):
     # for any in followed_by:
     #     print(any.password)
 
+    display_follow=True
+    # checking is the user is the user in session
+    if current_user == current_user_:
+        display_follow= False
+    else:
+        # checking if the user to follow is allready followed
+        if  current_user in followed_by:
+            display_follow= False
+   
 
-    return render_template("profile.html",current_user=current_user_, all_posts=all_posts, current_time=current_time, followed_by=followed_by)
+  
+
+
+    return render_template("profile.html",current_user=current_user_, all_posts=all_posts, current_time=current_time, followed_by=followed_by, display_follow=display_follow)
 
 # follow route
 @app.route("/follow/<username>")
