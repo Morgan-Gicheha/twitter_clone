@@ -86,7 +86,7 @@
                         {% if display_follow %}
                         <li class="list-group-item">
                             
-                            <a href=" {{ url_for('follow',username='morgan') }} ">
+                            <a href=" {{ url_for('follow',username=current_user.username) }} ">
                                 &nbsp;<strong class="pull-right">Follow</strong>
                             </a>
                         </li>

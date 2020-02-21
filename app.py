@@ -156,14 +156,18 @@ def timeline(username):
         user = current_user
 
 
-    
-        
-    all_posts_timeline = Posts.query.filter_by(user_id=current_user_id).order_by(Posts.date_posted.desc()).all()
+        # getting all posts for all followee.... followee is the person being followed..the below query joins posts by the followee to theuser id in the posts table
+        # thus it will get all posts of being followed by the logged in user
+    all_posts_timeline = Posts.query.join(followers,(followers.c.followee_id_followee==Posts.user_id)).filter(followers.c.me_user_id_follower==user.id).order_by(Posts.date_posted.desc()).all()
+    # getting all posts
+    # all_posts_timeline = Posts.query.filter_by(user_id=current_user_id).order_by(Posts.date_posted.desc()).all()
     # geting current time
+    print(all_posts_timeline)
     current_time =datetime.now()
     
     # getting total number of tweets
-    total_tweets= len(all_posts_timeline)
+    # total_tweets= len(all_posts_timeline)
+    total_tweets= 100
         
     return render_template("timeline.html", form=form, all_posts = all_posts_timeline, current_time=current_time, total_tweets=total_tweets, user=user)
   
@@ -217,9 +221,8 @@ def profile(username):
     # checking is the user is the user in session
     if current_user == current_user_:
         display_follow= False
-    else:
+    elif current_user in followed_by :
         # checking if the user to follow is allready followed
-        if  current_user in followed_by:
             display_follow= False
    
 
