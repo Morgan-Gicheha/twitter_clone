@@ -158,7 +158,14 @@
                                                 <div class="col-lg-10">
                                                     <div>
                                                         <strong class="mid">{{follower.name}}</strong>
-                                                        <small><em>@{{follower.username}}</em></small>
+                                                        <small>
+                                                          
+                                                                <a  href=" {{ url_for('profile', username=follower.username ) }}">
+                                                                    @{{follower.username}}
+                                                                </a>
+                                                                
+                                                           
+                                                        </small>
                                                     </div>
                                                     <div class="row pad">
                                                         <hr />
@@ -185,43 +192,27 @@
                     <div class="panel-body">
                         <h3>Who To Watch</h3>
                     </div>
+                    
                     <ul class="list-group">
+                        {% for who_to_watch in who_to_watch %}
                         <li class="list-group-item">
-                            The English Premier League
+                            {{who_to_watch.name}}
                             <div>
-                                <strong>@theEPL</strong>
+                                <strong>
+                                    <a href=" {{ url_for('profile', username=who_to_watch.username) }} "> 
+                                        @{{who_to_watch.username}}
+                                    </a>
+                                    
+                                
+                                </strong>
                                 <span class="pull-right">
-                                    3,949,335 Followers
+                                    {{who_to_watch.followed_by.all()|length}} Followers
                                 </span>
                             </div>
                         </li>
-                        <li class="list-group-item">
-                            Barclays Bank
-                            <div>
-                                <strong>@barclarysBank</strong>
-                                <span class="pull-right">
-                                    3,451 Followers
-                                </span>
-                            </div>
-                        </li>
-                        <li class="list-group-item">
-                            Leonardo Rumlow
-                            <div>
-                                <strong>@rummYLEO</strong>
-                                <span class="pull-right">
-                                    350 Followers
-                                </span>
-                            </div>
-                        </li>
-                        <li class="list-group-item">
-                            The Cable People
-                            <div>
-                                <strong>@theCablePeeps</strong>
-                                <span class="pull-right">
-                                    19,004 Followers
-                                </span>
-                            </div>
-                        </li>
+                        {% endfor %}
+     
+
                     </ul>
                 </div>
             </div>

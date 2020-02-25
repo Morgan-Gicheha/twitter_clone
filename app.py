@@ -167,7 +167,7 @@ def timeline(username):
     
     # getting total number of tweets
     total_tweets= Posts.query.filter_by(user_id=current_user_id).all()
-    print(len(total_tweets))
+    # print(len(total_tweets))
         
     return render_template("timeline.html", form=form, all_posts = all_posts_timeline, current_time=current_time, total_tweets=total_tweets, user=user)
   
@@ -225,12 +225,16 @@ def profile(username):
     elif current_user in followed_by :
         # checking if the user to follow is allready followed
             display_follow= False
-   
+
+    # getting random users from the database for the who to whatch section
+    who_to_watch = Users.query.filter(Users.id != current_user_.id ).order_by(db.func.random()).limit(4).all()
+    # for x in who_to_watch:
+    #     print(x.username)
 
   
 
 
-    return render_template("profile.html",current_user=current_user_, all_posts=all_posts, current_time=current_time, followed_by=followed_by, display_follow=display_follow)
+    return render_template("profile.html",current_user=current_user_, all_posts=all_posts, current_time=current_time, followed_by=followed_by, display_follow=display_follow, who_to_watch=who_to_watch)
 
 # follow route
 @app.route("/follow/<username>")

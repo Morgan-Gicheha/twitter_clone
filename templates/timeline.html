@@ -107,7 +107,7 @@
                                                 <img src="{{any.this_user.profile_image}}"
                                                     style="width: 30px; height: 30px;" class="img-circle" />
                                                 <strong>{{any.this_user.name}}</strong>
-                                                <small><em>@{{any.this_user.username}}</em></small>
+                                                <small> <a href=" {{ url_for('profile', username=any.this_user.username ) }} ">@{{any.this_user.username}}</a> </small>
                                             </div>
                                             <div class="col-lg-2 text-right">
                                                 {{ (current_time-any.date_posted)|div_mode  }}
