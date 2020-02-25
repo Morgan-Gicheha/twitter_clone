@@ -18,14 +18,17 @@ app =Flask(__name__)
 @app.before_first_request
 def create():
     db.create_all()
+
+POSTGRES_LINK='"postgresql://postgres:morgan8514@127.0.0.1:5432/twitter_clone"'
+HEROKU_LINK= 'postgres://kbiumvmlmgywyy:ab6cdb841d615b28942dda992221111bba8d679673d6dc74ef941f7ada060875@ec2-18-213-176-229.compute-1.amazonaws.com:5432/dcfgerp8p1hj70'
 # configuring database
-app.config["SQLALCHEMY_DATABASE_URI"]="postgresql://postgres:morgan8514@127.0.0.1:5432/twitter_clone"
+app.config["SQLALCHEMY_DATABASE_URI"]=HEROKU_LINK
 app.config["SECRET_KEY"]= "secret"
 app.config["DEBUG"]=True
 # configuring uploads
 photos = UploadSet("photos", IMAGES)
 app.config["UPLOADED_PHOTOS_DEST"] = "pictures"
-app.config["UPLOADS_DEFAULT_URL"] = "'http://127.0.0.1:5000/_uploads/photos/download (1).jpg'"
+# app.config["UPLOADS_DEFAULT_URL"] = "'http://127.0.0.1:5000/_uploads/photos/download (1).jpg'"
 
 configure_uploads(app,photos)
 
@@ -73,18 +76,9 @@ def register():
             password = form.password.data
             
             # saving the image passed to specified folder
-            # image_filename=photos.save(form.image.data)
-            image = 'pictures/default.jpg'
-            if  form.image.data:
-                image_filename_=photos.save(form.image.data)
-                image_url = photos.url(image_filename_)
-                print('here if')
-            else:
-                image = 'pictures/default.jpg'
-                image_url= photos.url(image)
-                
-                print('if here')
-                
+            image_filename=photos.save(form.image.data)
+            image_url = photos.url(image_filename)
+
 
             
             # image_filename = 'pictures/default.jpg'
