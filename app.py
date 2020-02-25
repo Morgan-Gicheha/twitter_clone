@@ -25,6 +25,8 @@ app.config["DEBUG"]=True
 # configuring uploads
 photos = UploadSet("photos", IMAGES)
 app.config["UPLOADED_PHOTOS_DEST"] = "pictures"
+app.config["UPLOADS_DEFAULT_URL"] = "'http://127.0.0.1:5000/_uploads/photos/download (1).jpg'"
+
 configure_uploads(app,photos)
 
 login_manager = LoginManager(app)
@@ -65,14 +67,19 @@ def register():
     if form.validate_on_submit():
         if request.method =="POST":
             # recieving data from register form
+            
             name = form.name.data
             username = form.username.data
             password = form.password.data
-
+            image_filename = form.image.data
             # saving the image passed to specified folder
-            image_filename=photos.save(form.image.data)
+            # image_filename=photos.save(form.image.data)
+            if not  image_filename:
+                image_filename=  'C:/Users/giche/Desktop/protect/twitter_clone/download (1).jpg'
+                
+            image_filename_=photos.save(image_filename)
             # getting_image url
-            image_url = photos.url(image_filename)
+            image_url = photos.url(image_filename_)
             
             # getting date  whent account was created/caliing function
             now_today= time_()
@@ -150,10 +157,13 @@ def timeline(username):
         user= Users.query.filter_by(username= username).first()
         if not user:
             return 'user not found'
+        
         current_user_id =  user.id
+        user_=user
     else:
         current_user_id= current_user.id
         user = current_user
+        user_= current_user
 
 
         # getting all posts for all followee.... followee is the person being followed..the below query joins posts by the followee to theuser id in the posts table
@@ -168,8 +178,13 @@ def timeline(username):
     # getting total number of tweets
     total_tweets= Posts.query.filter_by(user_id=current_user_id).all()
     # print(len(total_tweets))
-        
-    return render_template("timeline.html", form=form, all_posts = all_posts_timeline, current_time=current_time, total_tweets=total_tweets, user=user)
+
+    # followed by
+    followed_by = user_.followed_by.all()
+    
+    # getting random users from the database for the who to whatch section
+    who_to_watch = Users.query.filter(Users.id != current_user_id ).order_by(db.func.random()).limit(4).all()
+    return render_template("timeline.html", form=form, all_posts = all_posts_timeline, current_time=current_time, total_tweets=total_tweets, user=user, who_to_watch=who_to_watch, followed_by=followed_by)
   
 # time since post created
 # incomplete

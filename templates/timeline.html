@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Timeline | Eng@ge!</title>
+    <title>Timeline | ___!</title>
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{ url_for('static',
@@ -19,7 +19,7 @@
         <div class="row" id="banner">
             <div class="title col-lg-12">
                 <p class="title">
-                    <a href="./">ENG@GE!</a>
+                    <a href="./">___!</a>
                 </p>
                 <p class="subtitle">...the awesome social platform</p>
             </div>
@@ -36,7 +36,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="./">Eng@ge!</a>
+                <a class="navbar-brand" href="./">___!</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -78,7 +78,7 @@
                             <div class="col-lg-4 text-center">
                                 <strong>
                                     Followers <br />
-                                    300
+                                    {{ followed_by|length }}
                                 </strong>
                             </div>
                         </div>
@@ -137,42 +137,32 @@
                         <h3>Who To Watch</h3>
                     </div>
                     <ul class="list-group">
-                        <li class="list-group-item">
-                            The English Premier League
-                            <div>
-                                <strong>@theEPL</strong>
-                                <span class="pull-right">
-                                    3,949,335 Followers
-                                </span>
+                        
+
+
+                            {% for who_to_watch in who_to_watch %}
+                            <li class="list-group-item">
+                                {{who_to_watch.name}}
+                                <div>
+                                    <strong>
+                                        <a href=" {{ url_for('profile', username=who_to_watch.username) }} "> 
+                                            @{{who_to_watch.username}}
+                                        </a>
+                                        
+                                    
+                                    </strong>
+                                    <span class="pull-right">
+                                        {{who_to_watch.followed_by.all()|length}} Followers
+                                    </span>
+                                </div>
+                            </li>
+                            {% endfor %}
+         
+
                             </div>
-                        </li>
-                        <li class="list-group-item">
-                            Barclays Bank
-                            <div>
-                                <strong>@barclarysBank</strong>
-                                <span class="pull-right">
-                                    3,451 Followers
-                                </span>
-                            </div>
-                        </li>
-                        <li class="list-group-item">
-                            Leonardo Rumlow
-                            <div>
-                                <strong>@rummYLEO</strong>
-                                <span class="pull-right">
-                                    350 Followers
-                                </span>
-                            </div>
-                        </li>
-                        <li class="list-group-item">
-                            The Cable People
-                            <div>
-                                <strong>@theCablePeeps</strong>
-                                <span class="pull-right">
-                                    19,004 Followers
-                                </span>
-                            </div>
-                        </li>
+                     
+                    
+        
                     </ul>
                 </div>
             </div>
@@ -181,7 +171,7 @@
         <footer>
             <div class="row pad">
                 <div class="col-lg-12 text-center">
-                    Copyright &copy; 2017 <strong> <a href="./">Eng@ge!</a></strong>
+                    Copyright &copy; 2019 <strong> <a href="./">___!</a></strong>
                 </div>
             </div>
         </footer>
@@ -199,7 +189,7 @@
                         <div class="row">
                             <div class="col-lg-8 col-lg-offset-2">
                                 <div class="form-group">
-                                    <label>Enter new <a href="./">Eng@ge!</a> post</label> {{ form.csrf_token }}
+                                    <label>Enter new <a href="./">___!</a> post</label> {{ form.csrf_token }}
  {{ form.post_area(class="form-control", rows="6", required="required",placeholder="Enter your new message here.")}}
                                 </div>
                                 <div class="form-group">

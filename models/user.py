@@ -10,7 +10,7 @@ class Users(UserMixin ,db.Model):
     username = db.Column(db.String(30))
     password = db.Column(db.String(100))
     joined_on = db.Column(db.Date)
-    profile_image= db.Column(db.String(100))
+    profile_image= db.Column(db.String())
     user=db.relationship("Posts", backref='this_user')
     
     # this is a query and it returns allm people that the curent user is following::: soo basically the cureent user is on the left of the table while\
