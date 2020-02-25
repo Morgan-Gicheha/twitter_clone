@@ -8,7 +8,7 @@ class Users(UserMixin ,db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80))
     username = db.Column(db.String(30))
-    password = db.Column(db.String(100))
+    password = db.Column(db.String())
     joined_on = db.Column(db.Date)
     profile_image= db.Column(db.String())
     user=db.relationship("Posts", backref='this_user')

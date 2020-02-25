@@ -71,15 +71,30 @@ def register():
             name = form.name.data
             username = form.username.data
             password = form.password.data
-            image_filename = form.image.data
+            
             # saving the image passed to specified folder
             # image_filename=photos.save(form.image.data)
-            if not  image_filename:
-                image_filename=  'C:/Users/giche/Desktop/protect/twitter_clone/download (1).jpg'
+            image = 'pictures/default.jpg'
+            if  form.image.data:
+                image_filename_=photos.save(form.image.data)
+                image_url = photos.url(image_filename_)
+                print('here if')
+            else:
+                image = 'pictures/default.jpg'
+                image_url= photos.url(image)
                 
-            image_filename_=photos.save(image_filename)
-            # getting_image url
-            image_url = photos.url(image_filename_)
+                print('if here')
+                
+
+            
+            # image_filename = 'pictures/default.jpg'
+            
+            # if image_filename:
+
+            #     image_filename_=photos.save(form.image.data)
+            # # getting_image url
+            # image_url = photos.url(image_filename)
+            # print(image_url)
             
             # getting date  whent account was created/caliing function
             now_today= time_()
