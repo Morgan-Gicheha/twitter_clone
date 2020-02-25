@@ -162,12 +162,12 @@ def timeline(username):
     # getting all posts
     # all_posts_timeline = Posts.query.filter_by(user_id=current_user_id).order_by(Posts.date_posted.desc()).all()
     # geting current time
-    print(all_posts_timeline)
+    # print(all_posts_timeline)
     current_time =datetime.now()
     
     # getting total number of tweets
-    # total_tweets= len(all_posts_timeline)
-    total_tweets= 100
+    total_tweets= Posts.query.filter_by(user_id=current_user_id).all()
+    print(len(total_tweets))
         
     return render_template("timeline.html", form=form, all_posts = all_posts_timeline, current_time=current_time, total_tweets=total_tweets, user=user)
   
@@ -210,6 +210,7 @@ def profile(username):
         current_user_=current_user
     # quering for all posts
     all_posts = Posts.query.filter_by(user_id=current_user_.id).order_by(Posts.date_posted.desc()).all()
+    # print(all_posts)
     current_time =datetime.now()
     # getting list of follwers
     followed_by = current_user_.followed_by.all()
