@@ -22,7 +22,7 @@ def create():
 POSTGRES_LINK="postgresql://postgres:morgan8514@127.0.0.1:5432/twitter_clone"
 HEROKU_LINK= 'postgres://kbiumvmlmgywyy:ab6cdb841d615b28942dda992221111bba8d679673d6dc74ef941f7ada060875@ec2-18-213-176-229.compute-1.amazonaws.com:5432/dcfgerp8p1hj70'
 # configuring database
-app.config["SQLALCHEMY_DATABASE_URI"]=HEROKU_LINK
+app.config["SQLALCHEMY_DATABASE_URI"]=POSTGRES_LINK
 app.config["SECRET_KEY"]= "secret"
 app.config["DEBUG"]=True
 # configuring uploads
@@ -37,7 +37,7 @@ login_manager.login_view = 'login'
 
 @login_manager.user_loader
 def load_user(user_id):
-    return Users.query.filter_by(id=user_id).first()    
+    return Users_twitter.query.filter_by(id=user_id).first()    
 
 db=SQLAlchemy(app)
 # importing time
@@ -45,7 +45,7 @@ from other_dependancies.time_func import time_
 from other_dependancies.time_func import time_post
 
 # importig the models/tables
-from models.user import Users
+from models.user import Users_twitter
 from models.posts import Posts
 from models.junction import followers
 
@@ -95,7 +95,7 @@ def register():
             
             # sending data to dd
 
-            info = Users(name=name, username=username, password=generate_password_hash(password),joined_on=now_today ,profile_image=image_url)
+            info = Users_twitter(name=name, username=username, password=generate_password_hash(password),joined_on=now_today ,profile_image=image_url)
             info.create()
             
             return render_template("index.html", form=form, message="Account created! Now Login..")
@@ -112,14 +112,14 @@ def login():
             password = form.password.data
             remember_me = form.remember_me.data
 
-            check_if_user_exist= Users.query.filter_by(username=username).first()
+            check_if_user_exist= Users_twitter.query.filter_by(username=username).first()
             if not check_if_user_exist:
                 message= "no such username found!"
                 print(message)
                 return render_template("index.html" , form=form, message_user=message)
 
 
-            checkin_username_and_password=Users.pass_username_check(username=username, password=password)
+            checkin_username_and_password=Users_twitter.pass_username_check(username=username, password=password)
             if checkin_username_and_password:
                 login_user(check_if_user_exist,remember=form.remember_me.data)
                 print("loged in")
@@ -163,7 +163,7 @@ def timeline(username):
     
     # quering for username this query will only run if the the username is passed in: else it will jump to the default user in session
     if username:
-        user= Users.query.filter_by(username= username).first()
+        user= Users_twitter.query.filter_by(username= username).first()
         if not user:
             return 'user not found'
         
@@ -191,8 +191,8 @@ def timeline(username):
     # followed by
     followed_by = user_.followed_by.all()
     
-    # getting random users from the database for the who to whatch section
-    who_to_watch = Users.query.filter(Users.id != current_user_id ).order_by(db.func.random()).limit(4).all()
+    # getting random Users_twitter from the database for the who to whatch section
+    who_to_watch = Users_twitter.query.filter(Users_twitter.id != current_user_id ).order_by(db.func.random()).limit(4).all()
     return render_template("timeline.html", form=form, all_posts = all_posts_timeline, current_time=current_time, total_tweets=total_tweets, user=user, who_to_watch=who_to_watch, followed_by=followed_by)
   
 # time since post created
@@ -224,7 +224,7 @@ def div_mode(delta):
 def profile(username):
     if username:
         # if username.. query database for username and return object
-        user = Users.query.filter_by(username=username).first()
+        user = Users_twitter.query.filter_by(username=username).first()
         if not user:
             return "user not found"
         current_user_= user
@@ -250,8 +250,8 @@ def profile(username):
         # checking if the user to follow is allready followed
             display_follow= False
 
-    # getting random users from the database for the who to whatch section
-    who_to_watch = Users.query.filter(Users.id != current_user_.id ).order_by(db.func.random()).limit(4).all()
+    # getting random Users_twitter from the database for the who to whatch section
+    who_to_watch = Users_twitter.query.filter(Users_twitter.id != current_user_.id ).order_by(db.func.random()).limit(4).all()
     # for x in who_to_watch:
     #     print(x.username)
 
@@ -264,7 +264,7 @@ def profile(username):
 @app.route("/follow/<username>")
 @login_required
 def follow(username):
-    user_to_follow = Users.query.filter_by(username=username).first()
+    user_to_follow = Users_twitter.query.filter_by(username=username).first()
 
     current_user.following.append(user_to_follow)
     db.session.commit()

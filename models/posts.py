@@ -4,7 +4,7 @@ from flask_login import UserMixin
 class Posts(UserMixin ,db.Model):
     '''this class stores the posts'''
     id = db.Column(db.Integer, primary_key=True)
-    user_id= db.Column(db.Integer,db.ForeignKey('users.id'), nullable=False )
+    user_id= db.Column(db.Integer,db.ForeignKey('users_twitter.id'), nullable=False )
     date_posted = db.Column(db.DateTime, nullable=False)
     post= db.Column(db.String(),nullable=False)
 
