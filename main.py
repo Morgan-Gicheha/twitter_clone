@@ -10,6 +10,8 @@ from flask_uploads import UploadSet, configure_uploads, IMAGES
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager,UserMixin,logout_user,login_fresh,login_required,logout_user, login_user, current_user
 from datetime import datetime
+import cloudinary
+import cloudinary.uploader
 
 app =Flask(__name__)
 
@@ -29,6 +31,10 @@ app.config["DEBUG"]=True
 photos = UploadSet("photos", IMAGES)
 app.config["UPLOADED_PHOTOS_DEST"] = "pictures"
 # app.config["UPLOADS_DEFAULT_URL"] = "'http://127.0.0.1:5000/_uploads/photos/download (1).jpg'"
+
+# confuguring cloudinary
+cloudinary.config(cloud_name="gicheworks", api_key="248314148666268", api_secret="vQAEKDhMrXCu0jJXWpixEr9N0iE")
+
 
 configure_uploads(app,photos)
 
@@ -74,11 +80,12 @@ def register():
             name = form.name.data
             username = form.username.data
             password = form.password.data
+            img = form.image.data
             
             # saving the image passed to specified folder
-            image_filename=photos.save(form.image.data)
-            image_url = photos.url(image_filename)
-
+            # image_filename=photos.save(form.image.data)
+            # image_url = photos.url(image_filename)
+            img = cloudinary.uploader.upload(img, public_id=username)
 
             
             # image_filename = 'pictures/default.jpg'
@@ -95,7 +102,7 @@ def register():
             
             # sending data to dd
 
-            info = Users_twitter(name=name, username=username, password=generate_password_hash(password),joined_on=now_today ,profile_image=image_url)
+            info = Users_twitter(name=name, username=username, password=generate_password_hash(password),joined_on=now_today ,profile_image=img["secure_url"])
             info.create()
             
             return render_template("index.html", form=form, message="Account created! Now Login..")
