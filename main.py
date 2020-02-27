@@ -251,7 +251,7 @@ def profile(username):
             display_follow= False
 
     # getting random Users_twitter from the database for the who to whatch section
-    who_to_watch = Users_twitter.query.filter(Users_twitter.id != current_user_.id ).order_by(db.func.random()).limit(4).all()
+    who_to_watch = Users_twitter.query.filter(Users_twitter.id != current_user.id ).order_by(db.func.random()).limit(4).all()
     # for x in who_to_watch:
     #     print(x.username)
 
