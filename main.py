@@ -17,7 +17,7 @@ app =Flask(__name__)
 
 @app.before_first_request
 def create():
-    db.drop_all()
+    db.create_all()
 
 POSTGRES_LINK="postgresql://postgres:morgan8514@127.0.0.1:5432/twitter_clone"
 HEROKU_LINK= 'postgres://kbiumvmlmgywyy:ab6cdb841d615b28942dda992221111bba8d679673d6dc74ef941f7ada060875@ec2-18-213-176-229.compute-1.amazonaws.com:5432/dcfgerp8p1hj70'
