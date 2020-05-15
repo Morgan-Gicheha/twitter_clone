@@ -8,7 +8,7 @@ This a python/flask application that imitates the functionality of twitter.To vi
 
 3.Image hosting using using [Cloudinary API](https://cloudinary.com/)
 
-4.UI is done wit html and css (some areas done this Flask WTF)
+4.UI is done wit html and css (some areas done with Flask WTF)
 
 5.Database sqlalchemy
 
