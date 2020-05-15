@@ -33,7 +33,7 @@ app.config["UPLOADED_PHOTOS_DEST"] = "pictures"
 # app.config["UPLOADS_DEFAULT_URL"] = "'http://127.0.0.1:5000/_uploads/photos/download (1).jpg'"
 
 # confuguring cloudinary
-cloudinary.config(cloud_name="gicheworks", api_key="248314148666268", api_secret="vQAEKDhMrXCu0jJXWpixEr9N0iE")
+cloudinary.config(cloud_name="", api_key="", api_secret="")
 
 
 configure_uploads(app,photos)
