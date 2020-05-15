@@ -21,8 +21,8 @@ app =Flask(__name__)
 def create():
     db.create_all()
 
-POSTGRES_LINK=
-HEROKU_LINK= 
+POSTGRES_LINK=""
+HEROKU_LINK= ""
 # configuring database
 app.config["SQLALCHEMY_DATABASE_URI"]=HEROKU_LINK
 app.config["SECRET_KEY"]= "secret"
