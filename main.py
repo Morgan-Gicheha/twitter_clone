@@ -22,7 +22,7 @@ def create():
     db.create_all()
 
 POSTGRES_LINK=""
-HEROKU_LINK= ""
+HEROKU_LINK= ''
 # configuring database
 app.config["SQLALCHEMY_DATABASE_URI"]=HEROKU_LINK
 app.config["SECRET_KEY"]= "secret"
@@ -33,7 +33,7 @@ app.config["UPLOADED_PHOTOS_DEST"] = "pictures"
 # app.config["UPLOADS_DEFAULT_URL"] = "'http://127.0.0.1:5000/_uploads/photos/download (1).jpg'"
 
 # confuguring cloudinary
-cloudinary.config(cloud_name="", api_key="", api_secret="")
+cloudinary.config(cloud_name="gicheworks", api_key="", api_secret="")
 
 
 configure_uploads(app,photos)
