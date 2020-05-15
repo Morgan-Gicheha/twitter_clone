@@ -1,6 +1,6 @@
 # Dummy Twitter 
 
-This a python/flask application that imitates the functionality of twitter.It includes the following code functionalities..
+This a python/flask application that imitates the functionality of twitter.To view the final product [click here](https://giche-dummy-twitter.herokuapp.com/) It includes the following code functionalities..
 
 1.Follow  people 
 

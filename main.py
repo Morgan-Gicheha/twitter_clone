@@ -80,23 +80,9 @@ def register():
             username = form.username.data
             password = form.password.data
             img = form.image.data
-            
-            # saving the image passed to specified folder
-            # image_filename=photos.save(form.image.data)
-            # image_url = photos.url(image_filename)
+     
             img = cloudinary.uploader.upload(img, public_id=username)
 
-            
-            # image_filename = 'pictures/default.jpg'
-            
-            # if image_filename:
-
-            #     image_filename_=photos.save(form.image.data)
-            # # getting_image url
-            # image_url = photos.url(image_filename)
-            # print(image_url)
-            
-            # getting date  whent account was created/caliing function
             now_today= time_()
             
             # sending data to dd
