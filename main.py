@@ -64,7 +64,6 @@ from form.post_form import Post_form
 def home():
     form = Login_form()
 
-
     return render_template("index.html" , form=form)
 
 
